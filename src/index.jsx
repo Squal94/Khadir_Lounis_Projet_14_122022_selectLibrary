@@ -74,7 +74,7 @@ const SelectItem = ({ arrayProps, selectImg, selectId }) => {
         }}
       >
         <p id={`${selectId}`}>
-          {selected === false ? `Select your ${selectClass}` : option}
+          {selected === false ? `Select your ${selectId}` : option}
         </p>
         <arrowImg
           id={`selectItem__${selectId}__field--img`}
