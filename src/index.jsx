@@ -3,27 +3,59 @@ import arrow from "./angle-arrow-down.png";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-// const Outlined = styled.div`
-//   font-size: 16px;
-//   padding: 15px;
-//   border: 1px solid #e0115f;
-//   outline: none;
-//   box-shadow: none;
-//   background-color: white;
-//   color: #e0115f;
-//   text-decoration: none;
-//   transition: border 0.25s, background 0.25s, color 0.25s;
-//   &:hover {
-//     cursor: pointer;
-//     color: #990c41;
-//     border-color: #990c41;
-//     background-color: #dddddd;
-//   }
-// `;
+export const PageContainer = styled.div`
+  width: 230px;
+  margin
+  position: relative;
+`;
+export const ListContainer = styled.ul`
+  width: 100%;
+  overflow: hidden;
+  margin: 0 0 0 -35px;
+  position: absolute;
+  background-color: white;
+  z-index: 5;
+`;
+export const ListOption = styled.li`
+  width: 100%;
+  list-style: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(119, 119, 215, 0.573);
+  }
+  & p {
+    margin: 0;
+    padding: 0;
+  }
+`;
+export const ListOptionP = styled.p`
+  margin: 0;
+  padding: 0;
+`;
+export const arrowImg = styled.img`
+  width: 15px;
+  transition: transform 0.3s ease-in-out;
+`;
+export const SelectFront = styled.div`
+  width: 230px;
+  padding: 7px 16px;
+  height: 32px;
+  box-sizing: border-box;
+  background-color: #f6f6f6;
+  border-radius: 3px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+`;
 
-function SelectItem({ arrayProps, selectImg, selectId }) {
+const SelectItem = ({ arrayProps, selectImg, selectId }) => {
   const [option, setOption] = useState("");
   const [selected, setSelected] = useState(false);
+  const [hide, sethide] = useState(true);
 
   const toggleArrow = () => {
     const arrow = document.querySelector(
@@ -32,48 +64,45 @@ function SelectItem({ arrayProps, selectImg, selectId }) {
     arrow.classList.toggle("rotate");
   };
 
-  const toggleList = () => {
-    const list = document.querySelector(`#selectItem__${selectId}__list`);
-    list.classList.toggle("hide");
-    toggleArrow();
-  };
   return (
-    <div id="selectItem">
-      <div
+    <PageContainer>
+      <SelectFront
         id={`selectItem__${selectId}__field`}
         onClick={() => {
-          toggleList();
+          toggleArrow();
+          sethide(!hide);
         }}
       >
         <p id={`${selectId}`}>
           {selected === false ? `Select your ${selectClass}` : option}
         </p>
-        <img
+        <arrowImg
           id={`selectItem__${selectId}__field--img`}
           src={selectImg}
           alt="Fleche ouverture du select"
         />
-      </div>
-      <ul id={`selectItem__${selectId}__list hide`}>
-        {arrayProps.map((unit) => (
-          <li
-            id={`selectItem__${selectId}__list--option`}
-            onClick={() => {
-              setOption(unit.name);
-              setSelected(true);
-              toggleList();
-            }}
-            key={unit.abbreviation}
-          >
-            <p>{unit.name}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+      </SelectFront>
+      {hide === true ? (
+        ""
+      ) : (
+        <ListContainer id={`selectItem__${selectId}__list`}>
+          {arrayProps.map((unit) => (
+            <ListOption
+              id={`selectItem__${selectId}__list--option`}
+              onClick={() => {
+                setOption(unit.name);
+                setSelected(true);
+                toggleList();
+              }}
+              key={unit.abbreviation}
+            >
+              <ListOptionP>{unit.name}</ListOptionP>
+            </ListOption>
+          ))}
+        </ListContainer>
+      )}
+    </PageContainer>
   );
-}
-SelectItem.defaultProps = {
-  variant: "outlined",
 };
 
 SelectItem.propTypes = {
@@ -85,41 +114,6 @@ SelectItem.propTypes = {
   ).isRequired,
   selectImg: PropTypes.string.isRequired,
   selectClass: PropTypes.string.isRequired,
-  // variant: PropTypes.oneOf(["outlined", "contained", "text"]),
 };
 
 export { SelectItem };
-
-// <div className="selectItem">
-//   <div
-//     id="selectField"
-//     className={`selectItem__${selectClass}__field`}
-//     onClick={() => {
-//       toggleList();
-//     }}
-//   >
-//     <p id={`${selectClass}`}>
-//       {selected === false ? `Select your ${selectClass}` : option}
-//     </p>
-//     <img
-//       className={`selectItem__${selectClass}__field--img`}
-//       src={selectImg}
-//       alt="Fleche ouverture du select"
-//     />
-//   </div>
-//   <ul className={`selectItem__${selectClass}__list hide`}>
-//     {arrayProps.map((unit) => (
-//       <li
-//         className={`selectItem__${selectClass}__list--option`}
-//         onClick={() => {
-//           setOption(unit.name);
-//           setSelected(true);
-//           toggleList();
-//         }}
-//         key={unit.abbreviation}
-//       >
-//         <p>{unit.name}</p>
-//       </li>
-//     ))}
-//   </ul>
-// </div>;
