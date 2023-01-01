@@ -113,7 +113,7 @@ SelectItem.propTypes = {
     }).isRequired
   ).isRequired,
   selectImg: PropTypes.string.isRequired,
-  selectClass: PropTypes.string.isRequired,
+  selectId: PropTypes.string.isRequired,
 };
 
 export { SelectItem };
